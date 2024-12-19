@@ -4,7 +4,10 @@ RUN mkdir /typesense-schema && \
     mkdir /app && \
     chown php:php /app /typesense-schema
 
-COPY bin src composer.json composer.lock /app
+COPY --chown=php:php bin /app/bin
+COPY --chown=php:php src /app/src
+COPY --chown=php:php composer.json /app
+COPY --chown=php:php composer.lock /app
 
 USER php
 
@@ -14,4 +17,4 @@ RUN chdir /app && \
 
 WORKDIR /typesense-schema
 
-CMD /app/bin/tsimport.php
+CMD ["/app/bin/tsimport.php"]
