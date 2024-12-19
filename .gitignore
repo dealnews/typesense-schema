@@ -1,0 +1,13 @@
+# IDE project settings
+.project
+.settings
+.idea
+
+# Temporary files
+.DS_Store
+*~
+*.sw[aop]
+tests/ts.ini
+
+# Deployment dependencies
+/vendor

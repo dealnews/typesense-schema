@@ -1,0 +1,7 @@
+typesense.development.host    = ts-dev.example.net
+typesense.development.api_key = [in 1password]
+typesense.development.port    = 443
+
+typesense.production.host    = ts.example.net
+typesense.production.api_key = [in 1password]
+typesense.production.port    = 443

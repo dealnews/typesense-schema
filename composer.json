@@ -1,0 +1,33 @@
+{
+    "name": "dealnews/typesense-schema",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "autoload": {
+        "psr-4": {
+            "DealNews\\TypesenseSchema\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Brian Moon",
+            "email": "brianm@dealnews.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "dealnews/console": "^0.2.1",
+        "dealnews/get-config": "^2.1",
+        "php-http/curl-client": "^2.3",
+        "sarhan/php-flatten": "^4.0",
+        "symfony/http-client": "^6.4",
+        "typesense/typesense-php": "^4.9"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        },
+        "optimize-autoloader": true,
+        "discard-changes": true,
+        "sort-packages": true
+    }
+}
