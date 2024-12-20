@@ -2,6 +2,10 @@
 
 This application will help manage collections in Typesense.
 
+## Configuration
+
+To configure your environments, copy the `ts.ini-example` file to `ts.ini`. Update it with the host, port, and api key for each of your environments. These will be the environment names used when running the `update.sh` script.
+
 ## Running with Docker
 
 ```sh
