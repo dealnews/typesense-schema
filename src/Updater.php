@@ -70,17 +70,21 @@ class Updater {
         } else {
             $current_schema = $this->client->collections[$real_collection]->retrieve();
             $patch = $this->buildPatch($schema, $current_schema);
+
             if (empty($patch)) {
                 echo "Schema is up to date\n";
                 return;
             }
-            try {
-                $result = $this->client->collections[$real_collection]->update(['fields' => $patch]);
-            } catch (\Throwable $e) {
-                echo "Failed to update existing collection {$real_collection}.\n";
-                echo "Message: " . $e->getMessage() . "\n";
-                if (Interact::confirm("Would you like to create a new collection?")) {
-                    $this->createCollection($schema, $this->collection);
+
+            if (Interact::confirm("Would you like to continue?")) {
+                try {
+                    $result = $this->client->collections[$real_collection]->update(['fields' => $patch]);
+                } catch (\Throwable $e) {
+                    echo "Failed to update existing collection {$real_collection}.\n";
+                    echo "Message: " . $e->getMessage() . "\n";
+                    if (Interact::confirm("Would you like to create a new collection?")) {
+                        $this->createCollection($schema, $this->collection);
+                    }
                 }
             }
         }
@@ -126,17 +130,33 @@ class Updater {
                     }
 
                     if ($local_field != $server_field) {
+                        echo "Updating field: {$local_field['name']}\n";
                         $modified_fields[$local_field['name']] = $local_field;
                     }
                     $found = true;
                 }
             }
             if (!$found) {
+                echo "New field:      {$local_field['name']}\n";
                 $new_fields[$local_field['name']] = $local_field;
             }
         }
 
-        $patch = $new_fields;
+        $patch = array_values($new_fields);
+
+        foreach ($server_fields as $server_field) {
+            $found = false;
+            foreach ($local_fields as $local_field) {
+                if ($local_field['name'] == $server_field['name']) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                echo "Dropping field: {$server_field['name']}\n";
+                $patch[] = ['name' => $server_field['name'], 'drop' => true];
+            }
+        }
 
         foreach ($modified_fields as $name => $field) {
             $patch[] = ['name' => $name, 'drop' => true];
