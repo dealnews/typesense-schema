@@ -136,7 +136,8 @@ class Updater {
                     $found = true;
                 }
             }
-            if (!$found) {
+            // the server does not return the id field
+            if (!$found && $local_field['name'] != 'id') {
                 echo "New field:      {$local_field['name']}\n";
                 $new_fields[$local_field['name']] = $local_field;
             }
