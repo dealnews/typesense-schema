@@ -22,9 +22,10 @@ class Updater {
 
         $config = new GetConfig($ini_file);
 
-        $api_key = $config->get("typesense.{$this->environment}.api_key");
-        $host    = $config->get("typesense.{$this->environment}.host");
-        $port    = $config->get("typesense.{$this->environment}.port");
+        $api_key  = $config->get("typesense.{$this->environment}.api_key");
+        $host     = $config->get("typesense.{$this->environment}.host");
+        $port     = $config->get("typesense.{$this->environment}.port");
+        $protocol = $config->get("typesense.{$this->environment}.protocol");
 
         if (empty($api_key) || empty($host)) {
             throw new \InvalidArgumentException("Collection {$this->collection} not found in $ini_file.");
@@ -37,7 +38,7 @@ class Updater {
                     [
                         'host' => $host,
                         'port' => $port,
-                        'protocol' => 'https',
+                        'protocol' => $protocol ?? 'https',
                     ],
                 ],
                 'client' => new HttplugClient(),
